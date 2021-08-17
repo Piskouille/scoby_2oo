@@ -4,7 +4,7 @@ const Item = require('../models/Item')
 
 router.get('/', (req, res, next) => {
     Item
-    .find()
+    .find().populate('creator', "-password").exec()
     .then((itemsDocument) => {
         res.status(200).json(itemsDocument)
     })

@@ -1,7 +1,8 @@
 import React from "react";
-import ReactMapboxGl, { Marker, Popup } from 'react-mapbox-gl';
+import ReactMapboxGl, { Marker } from 'react-mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import apiHandler from "../api/apiHandler";
+import '../styles/CardItem.css'
 
 const Map = ReactMapboxGl({
   accessToken: process.env.REACT_APP_MAPBOX_TOKEN,
@@ -27,6 +28,7 @@ class Home extends React.Component {
       items.forEach(item => item.infoWindow = false)
 
       this.setState({items: items})
+      console.log(this.state.items  )
     }
     catch(err){
       console.log(err)
@@ -48,18 +50,17 @@ class Home extends React.Component {
     this.setState({items: dummyInfoWindows})
   }
 
-
-
-
   render(){
   return (
-    <div>
-      <h1>MAPBOX  :</h1>
-    
+    <>
+   
       <Map
         style="mapbox://styles/piskouille/cksg64s8iem8218qqfmdcvyzd"
         center ={[2.3522219, 48.856614]}
         containerStyle={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
           height: '100vh',
           width: '100vw'
         }}
@@ -82,30 +83,74 @@ class Home extends React.Component {
                 </Marker>
 
                   {item.infoWindow && (
-                      <Popup
-                      coordinates={[-0.13235092163085938,51.518250335096376]}
-                      offset={{
-                        'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
-                      }}
+                      <div
                         style={{
                           position: 'absolute',
-                          top:0,
-                          left:0}}>
-                            <h1> BONJOUR </h1>
-                      </Popup>
+                          zIndex: 10,
+                          top: 0,
+                          left: 0,
+                          backgroundColor: 'white',
+                          width: 300,
+                          height: 400,
+                          padding: 30,
+                          margin: 40,
+                          borderRadius: 40
+                        }}>
+                        <div style={{
+                          display: 'flex',
+                          height: '100%',
+                          flexDirection : 'column',
+                          justifyContent: 'space-evenly',
+                          WebkitAlignItems: 'center',
+                        }}>
+                            <span style={{
+                              display: 'inline-block',
+                              position: 'absolute',
+                              top: 15,
+                              left: 15,
+                              fontSize: 22
+                            }}
+                            onClick={this.handleInfoWindow}> close </span>
+                            <img style={{
+                              width: '50%',
+                              height: 'auto'
+                            }} 
+                            src={item.image} alt={item.name} />
+                            <h1> {item.name} </h1>
+                            <div>
+                              <span>Quantity: {item.quantity} | </span>
+                              <span>{item.category}</span>
+                            </div>
+                            <div style={{
+                              padding: '10px 20px',
+                              borderRadius: '40px',
+                              background: 'rgb(220,220,220)',
+                              width: '100%'}}
+                            >{item.description}</div>
+                            <div>{item.formattedAddress}</div>
+                            <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
+                              <img style={{
+                                width: 30,
+                                borderRadius: '50%'
+                              }} src={item.creator.profileImg} alt={item.creator.firstName} />
+                              <span style={{display: 'inline-block'}}>Given away by {item.creator.firstName}</span>
+                            </div>
+                            <div style={{
+                              padding: '10px 20px',
+                              borderRadius: '40px',
+                              background: 'rgba(75,0,130, .2)',
+                              color: 'rgb(75,0,130)'
+                            }}>contact {item.creator.firstName} at <span style={{fontWeight: 600}}>{item.creator.email}</span></div>
+
+
+                        </div>
+                      </div>
                   )}
             </React.Fragment>
           )
-        })}
-
-
-
-
-
-
-
-      </Map>;
-    </div>
+        })} 
+      </Map>
+    </>
   )};
 };
 
