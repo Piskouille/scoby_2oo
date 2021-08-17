@@ -52,7 +52,6 @@ class Home extends React.Component {
 
 
   render(){
-    console.log(this.state.infoWindows)
   return (
     <div>
       <h1>MAPBOX  :</h1>
@@ -65,26 +64,39 @@ class Home extends React.Component {
           width: '100vw'
         }}
       >
-      
+        
         {this.state.items.map(item => {
 
-  
+          return(
+            <React.Fragment key={item._id}>
+              <Marker
+                  coordinates={item.location.coordinates.reverse()}
+                  anchor="bottom"
+                  style={{
+                    width:35,
+                    height: 35
+                  }}
+                  onClick={() => this.handleInfoWindow(item._id)}  
+                >
+                  <img src={item.image} alt={item.name}/>
+                </Marker>
 
-           return(
-            <Marker
-            key={item._id}
-              coordinates={item.location.coordinates.reverse()}
-              anchor="bottom"
-              style={{
-                width:35,
-                height: 35
-              }}
-              onClick={() => this.handleInfoWindow(item._id)}  
-            >
-              <img src={item.image} alt={item.name}/>
-            </Marker>
- 
-        )})}
+                  {item.infoWindow && (
+                      <Popup
+                      coordinates={[-0.13235092163085938,51.518250335096376]}
+                      offset={{
+                        'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
+                      }}
+                        style={{
+                          position: 'absolute',
+                          top:0,
+                          left:0}}>
+                            <h1> BONJOUR </h1>
+                      </Popup>
+                  )}
+            </React.Fragment>
+          )
+        })}
 
 
 
