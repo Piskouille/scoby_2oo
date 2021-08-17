@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Item = require('../models/Item')
 
-router.get('/api/items', (req, res, next) => {
+router.get('/', (req, res, next) => {
     Item
     .find()
     .then((itemsDocument) => {
@@ -13,7 +13,7 @@ router.get('/api/items', (req, res, next) => {
     })
 })
 
-router.get('/api/items/:id', (req, res, next) => {
+router.get('/:id', (req, res, next) => {
     Item.findOneById(req.params.id)
     .then((foundItem) => {
         if(!foundItem) {
@@ -26,7 +26,7 @@ router.get('/api/items/:id', (req, res, next) => {
     })
 })
 
-router.post('/api/items', (req, res, next) => {
+router.post('/', (req, res, next) => {
     Item.create(req.body)
     .then((createdItem) => {
         res.status(201).json(createdItem);
@@ -36,7 +36,7 @@ router.post('/api/items', (req, res, next) => {
     })
 })
 
-router.patch('/api/items/:id', async (req, res, next) => {
+router.patch('/:id', async (req, res, next) => {
 
     try {
         const updated = await Item.findByIdAndUpdate(id, req.body, {
@@ -49,7 +49,7 @@ router.patch('/api/items/:id', async (req, res, next) => {
 });
 
 
-router.delete('/api/items/:id', (req, res, next) => {
+router.delete('/:id', (req, res, next) => {
     Item.findByIdAndDelete(req.params.id).then((deletedItem) => {
         if(!deletedItem) {
             res.status(404).json({message : 'This item does not exist'})
