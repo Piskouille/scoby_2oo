@@ -11,7 +11,7 @@ import FormItem from "./components/Forms/FormItem";
 function App() {
   return (
     <div className="App">
-      <NavMain />
+      <NavMain style={{backgroundColor: 'transparent'}}/>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/signin" component={Signin} />
