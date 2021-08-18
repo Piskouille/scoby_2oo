@@ -3,8 +3,9 @@ const router = express.Router();
 const Item = require('../models/Item');
 const requireAuth = require('../middlewares/requireAuth')
 const mongoose = require('mongoose')
+const uploader = require('../config/cloudinary')
 
-router.get('/', (req, res, next) => {
+router.get('/',  (req, res, next) => {
     Item
     .find().populate('creator', "-password").exec()
     .then((itemsDocument) => {
@@ -28,8 +29,15 @@ router.get('/:id', (req, res, next) => {
     })
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', uploader.single("image"), (req, res, next) => {
     console.log('REQ', req.body)
+
+    if(req.file) {
+        req.body.image = req.file.path;
+    } else {
+        req.body.image = 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg';
+    }
+
     Item.create(req.body)
     .then((createdItem) => {
         res.status(201).json(createdItem);
