@@ -21,3 +21,5 @@ mongoose
   .catch((error) => {
     console.log(`An error occured try to connect to the DB ${error}`);
   });
+
+  

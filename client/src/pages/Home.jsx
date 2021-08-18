@@ -70,8 +70,9 @@ class Home extends React.Component {
 
           return(
             <React.Fragment key={item._id}>
+              {item.location.coordinates.length && (
               <Marker
-                  coordinates={item.location.coordinates.length ? item.location.coordinates.reverse() : [0, 0]}
+                  coordinates={item.location.coordinates.reverse()}
                   anchor="bottom"
                   style={{
                     width:35,
@@ -79,9 +80,10 @@ class Home extends React.Component {
                   }}
                   onClick={() => this.handleInfoWindow(item._id)}  
                 >
+                  
                   <img src={item.image} alt={item.name}/>
                 </Marker>
-
+              )}
                   {item.infoWindow && (
                       <div
                         style={{

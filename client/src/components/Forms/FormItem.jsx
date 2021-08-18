@@ -3,6 +3,8 @@ import LocationAutoComplete from "../LocationAutoComplete";
 import Button from "../Base/Button";
 import "../../styles/form.css";
 import apiHandler from "../../api/apiHandler";
+import { withRouter } from "react-router-dom";
+import { withUser } from "../Auth/withUser";
 
 class ItemForm extends Component {
   state = {
@@ -14,7 +16,16 @@ class ItemForm extends Component {
     image: "",
     contact: "",
     location: null,
+   // creator: ""
   };
+
+  // componentDidUpdate(prevState, preVprops){
+  //   if(prevState.creator === this.props.authContext.user._id) return
+
+  //   this.setState({
+  //     creator: this.props.authContext.user._id
+  //   })
+  // }
 
   handleChange = (event) => {
     const name = event.target.name;
@@ -50,8 +61,10 @@ class ItemForm extends Component {
     // formData.append("toto", 15)
    // [3,10,15]
 
-   console.log(sendData)
+   
     await apiHandler.postItem(sendData);
+    this.props.history.push("/");
+    
     // In order to send back the data to the client, since there is an input type file you have to send the
     // data as formdata.
     // The object that you'll be sending will maybe be a nested object, in order to handle nested objects in our form data
@@ -79,6 +92,8 @@ class ItemForm extends Component {
   };
 
   render() {
+    if (this.props.authContext.isLoading) return <div> ... Loading</div>
+
     return (
       <div className="ItemForm-container">
         <form
@@ -159,7 +174,7 @@ class ItemForm extends Component {
             ></textarea>
           </div>
 
-          <div className="form-group">
+          <div style={{display: 'flex', flexDirection:'row'}} className="form-group">
             <label className="custom-upload label" htmlFor="image">
               Upload image
             </label>
@@ -170,7 +185,7 @@ class ItemForm extends Component {
               name="image"
               onChange={this.handleChange}
             />
-            {this.state.image && <img style={{width: 50, height: 50}} src={this.getTempImage()} alt="" />}
+            {this.state.image && <img style={{width: 50, height: 50, marginLeft: 20}} src={this.getTempImage()} alt="" />}
           </div>
 
           <h2>Contact information</h2>
@@ -210,5 +225,5 @@ class ItemForm extends Component {
   }
 }
 
-export default ItemForm;
+export default withRouter(withUser(ItemForm));
 
