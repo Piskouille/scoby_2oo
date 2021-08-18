@@ -56,6 +56,13 @@ const apiHandler = {
       .post('/api/items', data)
       .then((res) => res.data)
       .catch(errorHandler)
+  },
+
+  editProfile(data){
+    return service
+      .patch('/api/users/me', data)
+      .then((res) => res.data)
+      .catch(errorHandler)
   }
 };
 

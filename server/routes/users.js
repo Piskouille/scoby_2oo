@@ -8,7 +8,7 @@ const Item = require('../models/Item')
 router.get("/me", requireAuth, async (req, res, next) => {
 
   try{
-    const user = await User.findById(req.session.currentUser._id)
+    const user = await User.findById(req.session.currentUser)
       .select("-password") // remove user password from the query
     
     res.status(200).json(user)
@@ -20,8 +20,9 @@ router.get("/me", requireAuth, async (req, res, next) => {
 
 router.patch("/me", requireAuth, async (req, res, next) => {
   const data = req.body
-  const id = req.session.currentUser._id
-
+  const id = req.session.currentUser
+  console.log(req.session)
+  console.log(data, id)
   try{
     const userUpdated = await User.findByIdAndUpdate(id, data)
 
@@ -33,7 +34,7 @@ router.patch("/me", requireAuth, async (req, res, next) => {
 })
 
 router.get("/me/items", requireAuth, async (res, req, next) => {
-  const id = req.session.currentUser._id
+  const id = req.session.currentUser
 
   try{
     const userItems = await User.find({creator: id})
