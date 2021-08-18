@@ -24,7 +24,7 @@ class LocationAutoComplete extends Component {
       search: e.target.value,
       isLoading: true,
     });
-
+    
     // Stop the previous setTimeout if there is one in progress
     clearTimeout(this.timeoutId);
 
