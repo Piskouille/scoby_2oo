@@ -43,7 +43,7 @@ class ItemForm extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-
+    
     const jsonData = JSON.stringify(this.state)
     const sendData = new FormData()
 
@@ -75,7 +75,7 @@ class ItemForm extends Component {
     this.setState({
       formattedAddress: place.place_name,
       location: {
-        coordinates: place.geometry.coordinates,
+        coordinates: place.geometry.coordinates.reverse(),
         type: place.geometry.type,
       },
     });

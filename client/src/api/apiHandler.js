@@ -51,6 +51,20 @@ const apiHandler = {
       .catch(errorHandler);
   },
 
+  deleteItem(id){
+    return service
+    .delete("/api/items/" + id)
+    .then((res) => res.data)
+    .catch(errorHandler);
+  },
+
+  getPersonalItems() {
+    return service
+      .get("/api/users/me/items")
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
   postItem(data){
     return service
       .post('/api/items', data)

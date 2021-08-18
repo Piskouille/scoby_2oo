@@ -33,11 +33,12 @@ router.patch("/me", requireAuth, async (req, res, next) => {
   }
 })
 
-router.get("/me/items", requireAuth, async (res, req, next) => {
+router.get("/me/items", requireAuth, async (req, res, next) => {
+
   const id = req.session.currentUser
 
   try{
-    const userItems = await User.find({creator: id})
+    const userItems = await Item.find({creator: id})
 
     res.status(200).json(userItems)
   }

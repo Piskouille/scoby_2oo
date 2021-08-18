@@ -72,7 +72,7 @@ class Home extends React.Component {
 
           return(
             <React.Fragment key={item._id}>
-              {item.location.coordinates.length && (
+              
               <Marker
                   coordinates={item.location.coordinates.reverse()}
                   anchor="bottom"
@@ -83,9 +83,10 @@ class Home extends React.Component {
                   onClick={() => this.handleInfoWindow(item._id)}  
                 >
                   
+                  
                   <img src={item.image} alt={item.name}/>
                 </Marker>
-              )}
+             
                   {item.infoWindow && (
                       <div
                         style={{
@@ -145,8 +146,6 @@ class Home extends React.Component {
                               background: 'rgba(75,0,130, .2)',
                               color: 'rgb(75,0,130)'
                             }}>contact {item.creator.firstName} at <span style={{fontWeight: 600}}>{item.creator.email}</span></div>
-
-
                         </div>
                       </div>
                   )}
