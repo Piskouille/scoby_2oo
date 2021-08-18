@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import apiHandler from '../../api/apiHandler'
-
+import { Link } from 'react-router-dom'
 const CardItemProfile = ({item, ...rest}) => {
 
     const handleDelete = async (id) => {
@@ -33,7 +33,12 @@ const CardItemProfile = ({item, ...rest}) => {
                 <button onClick={() => handleDelete(item._id)} className="btn-secondary">Delete</button>
               </span>
               <span>
-                <button className="btn-primary">Edit</button>
+                <Link to={{
+                  pathname: '/item/create',
+                  state: {
+                    item: item,
+                  }
+                }} className="btn-primary" >Edit</Link>
               </span>
             </div>
           </div>

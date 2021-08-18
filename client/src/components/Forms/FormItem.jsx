@@ -22,7 +22,16 @@ class ItemForm extends Component {
   async componentDidMount(){
     this.setState({
       creator: this.props.authContext.user._id
+      
     })
+    console.log(this.props.location.state.item.name)
+    if (this.props.location.state) {
+      this.setState({
+         ...this.props.location.state.item
+      })
+      
+    }
+    
   }
 
   handleChange = (event) => {
@@ -46,19 +55,20 @@ class ItemForm extends Component {
     
     const jsonData = JSON.stringify(this.state)
     const sendData = new FormData()
+    
+    
 
     sendData.append("sendData", jsonData)
     sendData.append("image", this.state.image);
   
-  //  for(let key in this.state){
- //   formData.append(key, this.state[key])
-  //  }
-
-    // formData.append("toto", 3)
-    // formData.append("toto", 10)
-    // formData.append("toto", 15)
-   // [3,10,15]
-
+    
+    console.log("Send Data", sendData)
+    console.log("State" , this.state)
+    if (this.props.location.state) {
+      await apiHandler.editItem(sendData, this.props.location.state.item._id);
+      
+      return this.props.history.push('/profile')
+    }
    
     await apiHandler.postItem(sendData);
     this.props.history.push("/");
@@ -183,7 +193,7 @@ class ItemForm extends Component {
               name="image"
               onChange={this.handleChange}
             />
-            {this.state.image && <img style={{width: 50, height: 50, marginLeft: 20}} src={this.getTempImage()} alt="" />}
+            {/* {this.state.image && <img style={{width: 50, height: 50, marginLeft: 20}} src={this.getTempImage()} alt="" />} */}
           </div>
 
           <h2>Contact information</h2>
@@ -216,7 +226,7 @@ class ItemForm extends Component {
             personal page.
           </p>
 
-          <Button className="btn-submit">Add Item</Button>
+          <Button className="btn-submit">{this.props.location.state ? "Edit Item" : "Add Item"}</Button>
         </form>
       </div>
     );

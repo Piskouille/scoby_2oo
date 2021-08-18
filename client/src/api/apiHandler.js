@@ -77,6 +77,13 @@ const apiHandler = {
       .patch('/api/users/me', data)
       .then((res) => res.data)
       .catch(errorHandler)
+  },
+
+  editItem(data, id){
+    
+    return service.patch('/api/items/' + id, data)
+    .then((res) => res.data)
+    .catch(errorHandler)
   }
 };
 

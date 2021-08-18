@@ -30,7 +30,7 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', uploader.single("image"), (req, res, next) => {
-    console.log('REQ', req.body)
+  
 
     const data = JSON.parse(req.body.sendData)
 
@@ -40,7 +40,7 @@ router.post('/', uploader.single("image"), (req, res, next) => {
         data.image = 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg';
     }
 
-    console.log('DATAAAAA', data)
+   
 
     Item.create(data)
     .then((createdItem) => {
@@ -53,9 +53,18 @@ router.post('/', uploader.single("image"), (req, res, next) => {
 })
 
 router.patch('/:id', async (req, res, next) => {
+    console.log("req body", req.body)
+    const data = JSON.parse(req.body.sendData)
+    console.log("data", data)
+    
+    if(req.file) {
+        data.image = req.file.path;
+    } else {
+        data.image = 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg';
+    }
 
     try {
-        const updated = await Item.findByIdAndUpdate(id, req.body, {
+        const updated = await Item.findByIdAndUpdate(id, data, {
           new: true, 
         });
         res.status(200).json(updated);
