@@ -5,6 +5,7 @@ const requireAuth = require('../middlewares/requireAuth')
 const uploader = require('../config/cloudinary')
 
 router.get('/', (req, res, next) => {
+    console.log("here")
     Item
     .find().populate('creator', "-password").exec()
     .then((itemsDocument) => {

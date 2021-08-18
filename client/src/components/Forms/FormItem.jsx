@@ -16,16 +16,14 @@ class ItemForm extends Component {
     image: "",
     contact: "",
     location: null,
-   // creator: ""
+    creator: ''
   };
 
-  // componentDidUpdate(prevState, preVprops){
-  //   if(prevState.creator === this.props.authContext.user._id) return
-
-  //   this.setState({
-  //     creator: this.props.authContext.user._id
-  //   })
-  // }
+  async componentDidMount(){
+    this.setState({
+      creator: this.props.authContext.user._id
+    })
+  }
 
   handleChange = (event) => {
     const name = event.target.name;

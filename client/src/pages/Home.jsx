@@ -22,12 +22,14 @@ class Home extends React.Component {
   }
 
   async componentDidMount(){
+
     try{
+
       const items = await apiHandler.getItems()
-      
+
       items.forEach(item => item.infoWindow = false)
 
-      this.setState({items: items}, () => console.log(this.state.items))
+      this.setState({items: items})
       
     }
     catch(err){
