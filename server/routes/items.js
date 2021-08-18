@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Item = require('../models/Item');
 const requireAuth = require('../middlewares/requireAuth')
-const mongoose = require('mongoose')
 const uploader = require('../config/cloudinary')
 
 router.get('/',  (req, res, next) => {
@@ -32,17 +31,22 @@ router.get('/:id', (req, res, next) => {
 router.post('/', uploader.single("image"), (req, res, next) => {
     console.log('REQ', req.body)
 
+    const data = JSON.parse(req.body.sendData)
+
     if(req.file) {
-        req.body.image = req.file.path;
+        data.image = req.file.path;
     } else {
-        req.body.image = 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg';
+        data.image = 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg';
     }
 
-    Item.create(req.body)
+    console.log('DATAAAAA', data)
+
+    Item.create(data)
     .then((createdItem) => {
         res.status(201).json(createdItem);
     })
     .catch(err => {
+        console.log(err)
         res.status(500).json(err)
     })
 })

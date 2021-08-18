@@ -56,7 +56,7 @@ class Home extends React.Component {
    
       <Map
         style="mapbox://styles/piskouille/cksg64s8iem8218qqfmdcvyzd"
-        center ={[2.3522219, 48.856614]}
+        center = {[2.3522219, 48.856614]}
         containerStyle={{
           position: 'absolute',
           top: 0,
@@ -71,7 +71,7 @@ class Home extends React.Component {
           return(
             <React.Fragment key={item._id}>
               <Marker
-                  coordinates={item.location.coordinates.reverse()}
+                  coordinates={item.location.coordinates.length ? item.location.coordinates.reverse() : [0, 0]}
                   anchor="bottom"
                   style={{
                     width:35,

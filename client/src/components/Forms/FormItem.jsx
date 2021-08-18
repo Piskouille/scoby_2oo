@@ -6,38 +6,52 @@ import apiHandler from "../../api/apiHandler";
 
 class ItemForm extends Component {
   state = {
-    name: '',
+    name: "",
     category: "-1",
     quantity: 1,
-    formattedAddress: '',
-    description: '',
-    image: '',
-    contact: '',
-    location: null
+    formattedAddress: "",
+    description: "",
+    image: "",
+    contact: "",
+    location: null,
   };
 
-  handleChange = (event) =>{
-    const name = event.target.name
-    if(name === 'formattedAddress') return 
+  handleChange = (event) => {
+    const name = event.target.name;
+    if (name === "formattedAddress") return;
 
-    let value = event.target.type === 'radio' ? event.target.id : event.target.value
+    let value =
+      event.target.type === "radio"
+        ? event.target.id
+        : event.target.type === "file"
+        ? event.target.files[0]
+        : event.target.value;
 
     this.setState({
-      [name]: value    
+      [name]: value,
     });
-  }
+  };
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    
-    const postData = JSON.stringify(this.state);
-    const formData = new FormData();
-    formData.append("postData", postData);
 
+    const jsonData = JSON.stringify(this.state)
+    const sendData = new FormData()
 
-    console.log(formData)
+    sendData.append("sendData", jsonData)
+    sendData.append("image", this.state.image);
+  
+  //  for(let key in this.state){
+ //   formData.append(key, this.state[key])
+  //  }
 
-    await apiHandler.postItem(formData)
+    // formData.append("toto", 3)
+    // formData.append("toto", 10)
+    // formData.append("toto", 15)
+   // [3,10,15]
+
+   console.log(sendData)
+    await apiHandler.postItem(sendData);
     // In order to send back the data to the client, since there is an input type file you have to send the
     // data as formdata.
     // The object that you'll be sending will maybe be a nested object, in order to handle nested objects in our form data
@@ -47,24 +61,31 @@ class ItemForm extends Component {
   };
 
   handlePlace = (place) => {
-
     this.setState({
-      formattedAddress: place.place_name, 
-      location : {
-        coordinates : place.geometry.coordinates,
-        type : place.geometry.type,
-      }
-    })
+      formattedAddress: place.place_name,
+      location: {
+        coordinates: place.geometry.coordinates,
+        type: place.geometry.type,
+      },
+    });
     // This handle is passed as a callback to the autocomplete component.
     // Take a look at the data and see what you can get from it.
     // Look at the item model to know what you should retrieve and set as state.
-    
+  };
+
+  getTempImage = () => {
+    const tmpPath = URL.createObjectURL(this.state.image);
+    return tmpPath;
   };
 
   render() {
     return (
       <div className="ItemForm-container">
-        <form className="form" encType='multipart/form-data' onSubmit={this.handleSubmit}>
+        <form
+          className="form"
+          encType="multipart/form-data"
+          onSubmit={this.handleSubmit}
+        >
           <h2 className="title">Add Item</h2>
 
           <div className="form-group">
@@ -87,7 +108,12 @@ class ItemForm extends Component {
               Category
             </label>
 
-            <select id="category" name="category" onChange={this.handleChange} value={this.state.category} >
+            <select
+              id="category"
+              name="category"
+              onChange={this.handleChange}
+              value={this.state.category}
+            >
               <option value="-1" disabled>
                 Select a category
               </option>
@@ -102,7 +128,14 @@ class ItemForm extends Component {
             <label className="label" htmlFor="quantity">
               Quantity
             </label>
-            <input className="input" name="quantity" id="quantity" type="number" onChange={this.handleChange} value={this.state.quantity}/>
+            <input
+              className="input"
+              name="quantity"
+              id="quantity"
+              type="number"
+              onChange={this.handleChange}
+              value={this.state.quantity}
+            />
           </div>
 
           <div className="form-group">
@@ -130,7 +163,14 @@ class ItemForm extends Component {
             <label className="custom-upload label" htmlFor="image">
               Upload image
             </label>
-            <input className="input" id="image" type="file" name='image' onChange={this.handleChange} value={this.state.image}/>
+            <input
+              className="input"
+              id="image"
+              type="file"
+              name="image"
+              onChange={this.handleChange}
+            />
+            {this.state.image && <img style={{width: 50, height: 50}} src={this.getTempImage()} alt="" />}
           </div>
 
           <h2>Contact information</h2>
@@ -140,10 +180,20 @@ class ItemForm extends Component {
               How do you want to be reached?
             </label>
             <div>
-              <input type="radio" id='email' name="contact" onChange={this.handleChange}/>
+              <input
+                type="radio"
+                id="email"
+                name="contact"
+                onChange={this.handleChange}
+              />
               user email
             </div>
-            <input type="radio" id='phone' name="contact" onChange={this.handleChange}/>
+            <input
+              type="radio"
+              id="phone"
+              name="contact"
+              onChange={this.handleChange}
+            />
             contact phone number
           </div>
 
@@ -161,3 +211,4 @@ class ItemForm extends Component {
 }
 
 export default ItemForm;
+
