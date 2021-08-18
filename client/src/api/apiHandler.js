@@ -50,6 +50,13 @@ const apiHandler = {
       .then((res) => res.data)
       .catch(errorHandler);
   },
+
+  postItem(data){
+    return service
+      .post('/api/items', data)
+      .then((res) => res.data)
+      .catch(errorHandler)
+  }
 };
 
 export default apiHandler;

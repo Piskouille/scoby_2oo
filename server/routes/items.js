@@ -27,6 +27,7 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
+    console.log('REQ', req.body)
     Item.create(req.body)
     .then((createdItem) => {
         res.status(201).json(createdItem);
