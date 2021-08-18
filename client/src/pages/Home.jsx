@@ -27,8 +27,8 @@ class Home extends React.Component {
       
       items.forEach(item => item.infoWindow = false)
 
-      this.setState({items: items})
-      console.log(this.state.items  )
+      this.setState({items: items}, () => console.log(this.state.items))
+      
     }
     catch(err){
       console.log(err)
